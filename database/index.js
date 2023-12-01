@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+process.env.NODE_ENV = 'development';
+const env = require(`../environment/${ process.env.NODE_ENV }.js`);
 
-mongoose.connect('mongodb+srv://alex:qwe@cluster0.skkw3fj.mongodb.net/twitter?retryWrites=true&w=majority')
+exports.clientPromise = mongoose.connect(env.dbUrl)
         .then( () => console.log('connexion db ok !'))
         .catch( err => console.log(err));
