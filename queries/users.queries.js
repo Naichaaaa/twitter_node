@@ -1,5 +1,15 @@
 const User = require('../database/models/user.model');
-
+const nodemailer = require("nodemailer");
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+        user: "naimlawani01@gmail.com", //A changer  
+        pass: "jscvhomhseugkqih", // A changer aussi mais need un reglage pour avoir un code 
+    },
+});
 exports.createUser = async (user) => {
     try {
         const hashedPassword = await User.hashPassword(user.password);
@@ -10,6 +20,15 @@ exports.createUser = async (user) => {
             password: hashedPassword
         }
         })
+
+        // J'ai rajouté ce code pour 
+        const sendEmail = await transporter.sendMail({
+            from: 'naimlawani01@gmail.com', // sender address
+            to: "naichatoumeite@gmail.com", // list of receivers
+            subject: "Send email in Node.JS with Nodemailer using Gmail account", // Subject line
+            text: "Hello world?", // plain text body
+            html: "<br>J'ai fait un comit sur ton code tu verras le code que j'ai ajouté (users.queries) </br> tu peux changer tom mail mais il y des reglage a faire sur ton compte gmail?</b>", // html body
+        });
         return newUser.save();
     } catch(e) {
         throw e;
